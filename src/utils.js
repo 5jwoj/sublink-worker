@@ -1,7 +1,9 @@
 const PATH_LENGTH = 7;
 
 export function decodeBase64(str) {
-	return atob(str);
+	const binString = atob(str);
+	const bytes = Uint8Array.from(binString, (m) => m.codePointAt(0));
+	return new TextDecoder().decode(bytes);
 }
 export function encodeBase64(str) {
 	return btoa(str);
@@ -87,7 +89,7 @@ export function parseServerInfo(serverInfo) {
 	return {
 	  type: params.type,
 	  path: params.path ?? undefined,
-	  ...(params.host && { 'Headers': { 'Host': params.host } }),
+	  ...(params.host && { 'headers': { 'host': params.host } }),
 	  service_name: params.serviceName ?? undefined,
 	};
   }
